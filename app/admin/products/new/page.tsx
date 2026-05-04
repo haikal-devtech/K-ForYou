@@ -206,7 +206,8 @@ export default function NewProductPage() {
                     <>
                       <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                         <button type="button" onClick={() => setImageFile(null) || setImagePreview(null)} className="text-white text-sm font-bold underline">Remove</button>
+                         <button type="button" onClick={() => { setImageFile(null); setImagePreview(null); }} className="text-white text-sm font-bold underline">Remove</button>
+
                       </div>
                     </>
                   ) : (
