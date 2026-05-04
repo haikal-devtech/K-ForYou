@@ -14,13 +14,12 @@ export default function ProductFilterWrapper() {
   
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<{id:string, name:string}[]>([
-      { id: '1', name: 'Food & Spices' },
-      { id: '2', name: 'Textiles/Batik' },
-      { id: '3', name: 'Personal Care' },
-      { id: '4', name: 'Home & Living' },
-      { id: '5', name: 'Crafts' },
-      { id: '6', name: 'Apparel' },
+      { id: 'food-spices', name: 'Food & Spices' },
+      { id: 'textiles-batik', name: 'Textiles/Batik' },
+      { id: 'personal-care', name: 'Personal Care' },
+      { id: 'crafts', name: 'Crafts' },
   ]);
+
   const [loading, setLoading] = useState(true);
   
   const [filters, setFilters] = useState({
@@ -33,49 +32,58 @@ export default function ProductFilterWrapper() {
   
   const [sortBy, setSortBy] = useState('Newest');
 
-  // We should mock some data if Firebase connects fail or return 0, just so UI works
   useEffect(() => {
-    // Simulate fetching
-    const mockProducts: Product[] = [
-      {
-        id: 'p1', sku: 'IND-01', name: 'Indomie Goreng Original (Pack of 40)', slug: 'indomie-goreng',
-        categoryId: 'Food & Spices', shortDescription: 'The classic beloved instant noodle.',
-        description: '...', diasporaStory: '...', priceIdr: 150000, priceUsd: 10,
-        stockQuantity: 100, stockStatus: 'In Stock', weightGram: 3400, originCity: 'Jakarta',
-        supplierName: 'Indofood', isReadyStock: true, isFeatured: true, isActive: true,
-        thumbnailUrl: 'https://picsum.photos/seed/indomie/400/400', images: [],
-        seoTitle: '', seoDescription: '', tags: [], rating: 4.9, reviewCount: 240,
-        createdAt: Date.parse('2023-01-01'), updatedAt: Date.parse('2023-01-01')
-      },
-      {
-         id: 'p2', sku: 'BTK-01', name: 'Hand-Drawn Silk Batik Scarf', slug: 'hand-drawn-silk-batik',
-         categoryId: 'Textiles/Batik', shortDescription: 'Authentic hand-drawn (tulis) batik from Pekalongan.',
-         description: '...', diasporaStory: '...', priceIdr: 450000, priceUsd: 30,
-         stockQuantity: 5, stockStatus: 'In Stock', weightGram: 200, originCity: 'Pekalongan',
-         supplierName: 'Batik Danar Hadi', isReadyStock: true, isFeatured: true, isActive: true,
-         thumbnailUrl: 'https://picsum.photos/seed/batik1/400/400', images: [],
-         seoTitle: '', seoDescription: '', tags: [], rating: 5.0, reviewCount: 12,
-         createdAt: Date.parse('2023-01-01'), updatedAt: Date.parse('2023-01-01')
-      },
-      {
-         id: 'p3', sku: 'CRAFT-01', name: 'Jepara Teak Wood Serving Tray', slug: 'teak-wood-tray',
-         categoryId: 'Crafts', shortDescription: 'Hand-carved premium teak wood tray.',
-         description: '...', diasporaStory: '...', priceIdr: 250000, priceUsd: 18,
-         stockQuantity: 0, stockStatus: 'Out of Stock', weightGram: 800, originCity: 'Jepara',
-         supplierName: 'Jepara Crafters', isReadyStock: false, isFeatured: true, isActive: true,
-         thumbnailUrl: 'https://picsum.photos/seed/tray/400/400', images: [],
-         seoTitle: '', seoDescription: '', tags: [], rating: 4.8, reviewCount: 8,
-         createdAt: Date.parse('2023-01-01'), updatedAt: Date.parse('2023-01-01')
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const productsRef = collection(db, 'products');
+        const q = query(productsRef, where('isActive', '==', true));
+        const querySnapshot = await getDocs(q);
+        
+        if (querySnapshot.empty) {
+          console.log('No products found in Firestore, using mock data');
+          setProducts(mockProducts);
+        } else {
+          const fetchedProducts = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          })) as Product[];
+          setProducts(fetchedProducts);
+        }
+      } catch (error) {
+        console.error('Error fetching products from Firestore:', error);
+        setProducts(mockProducts);
+      } finally {
+        setLoading(false);
       }
-    ];
+    };
 
-    const timer = setTimeout(() => {
-      setProducts(mockProducts);
-      setLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
-
+    fetchProducts();
   }, []);
+
+  const mockProducts: Product[] = [
+    {
+      id: 'p1', sku: 'IND-01', name: 'Indomie Goreng Original (Pack of 40)', slug: 'indomie-goreng',
+      categoryId: 'food-spices', shortDescription: 'The classic beloved instant noodle.',
+      description: '...', diasporaStory: '...', priceIdr: 150000, priceUsd: 10,
+      stockQuantity: 100, stockStatus: 'In Stock', weightGram: 3400, originCity: 'Jakarta',
+      supplierName: 'Indofood', isReadyStock: true, isFeatured: true, isActive: true,
+      thumbnailUrl: 'https://picsum.photos/seed/indomie/400/400', images: [],
+      seoTitle: '', seoDescription: '', tags: [], rating: 4.9, reviewCount: 240,
+      createdAt: Date.now(), updatedAt: Date.now()
+    },
+    {
+       id: 'p2', sku: 'BTK-01', name: 'Hand-Drawn Silk Batik Scarf', slug: 'hand-drawn-silk-batik',
+       categoryId: 'textiles-batik', shortDescription: 'Authentic hand-drawn (tulis) batik from Pekalongan.',
+       description: '...', diasporaStory: '...', priceIdr: 450000, priceUsd: 30,
+       stockQuantity: 5, stockStatus: 'In Stock', weightGram: 200, originCity: 'Pekalongan',
+       supplierName: 'Batik Danar Hadi', isReadyStock: true, isFeatured: true, isActive: true,
+       thumbnailUrl: 'https://picsum.photos/seed/batik1/400/400', images: [],
+       seoTitle: '', seoDescription: '', tags: [], rating: 5.0, reviewCount: 12,
+       createdAt: Date.now(), updatedAt: Date.now()
+    }
+  ];
+
 
   // Filter local logic
   const filteredProducts = products.filter(p => {
