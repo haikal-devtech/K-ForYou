@@ -1,0 +1,30 @@
+export interface Product {
+  id: string;
+  sku: string;
+  name: string;
+  slug: string;
+  categoryId: string;
+  shortDescription: string;
+  description: string;
+  diasporaStory: string;
+  priceIdr: number;
+  priceUsd: number;
+  stockQuantity: number;
+  stockStatus: 'In Stock' | 'Out of Stock' | 'Pre-order';
+  weightGram: number;
+  dimensions?: string;
+  originCity: string;
+  supplierName: string;
+  isReadyStock: boolean;
+  isFeatured: boolean;
+  isActive: boolean;
+  thumbnailUrl: string;
+  images: string[];
+  seoTitle: string;
+  seoDescription: string;
+  tags: string[];
+  rating: number;
+  reviewCount: number;
+  createdAt: number;
+  updatedAt: number;
+}

@@ -1,0 +1,122 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Represents a product in the marketplace",
+      "type": "object",
+      "properties": {
+        "sku": { "type": "string" },
+        "name": { "type": "string" },
+        "slug": { "type": "string" },
+        "categoryId": { "type": "string" },
+        "shortDescription": { "type": "string" },
+        "description": { "type": "string" },
+        "diasporaStory": { "type": "string" },
+        "priceIdr": { "type": "number" },
+        "priceUsd": { "type": "number" },
+        "stockQuantity": { "type": "number" },
+        "stockStatus": { "type": "string" },
+        "weightGram": { "type": "number" },
+        "dimensions": { "type": "string" },
+        "originCity": { "type": "string" },
+        "supplierName": { "type": "string" },
+        "isReadyStock": { "type": "boolean" },
+        "isFeatured": { "type": "boolean" },
+        "isActive": { "type": "boolean" },
+        "thumbnailUrl": { "type": "string" },
+        "images": { "type": "array", "items": { "type": "string" } },
+        "seoTitle": { "type": "string" },
+        "seoDescription": { "type": "string" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "rating": { "type": "number" },
+        "reviewCount": { "type": "number" },
+        "createdAt": { "type": "number" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["sku", "name", "slug", "categoryId", "shortDescription", "priceIdr", "stockQuantity", "stockStatus", "weightGram", "originCity"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Represents a product category",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "slug": { "type": "string" },
+        "icon": { "type": "string" },
+        "colorCode": { "type": "string" },
+        "isActive": { "type": "boolean" },
+        "order": { "type": "number" }
+      },
+      "required": ["name", "slug"]
+    },
+    "Inquiry": {
+      "title": "Inquiry",
+      "description": "Shipping quote and purchase inquiry",
+      "type": "object",
+      "properties": {
+        "inquiryNumber": { "type": "string" },
+        "buyerName": { "type": "string" },
+        "buyerEmail": { "type": "string" },
+        "buyerPhone": { "type": "string" },
+        "country": { "type": "string" },
+        "city": { "type": "string" },
+        "address": { "type": "string" },
+        "postalCode": { "type": "string" },
+        "notes": { "type": "string" },
+        "preferredContact": { "type": "string" },
+        "source": { "type": "string" },
+        "status": { "type": "string" },
+        "subtotal": { "type": "number" },
+        "shippingFee": { "type": "number" },
+        "finalTotal": { "type": "number" },
+        "adminNotes": { "type": "string" },
+        "paymentInstruction": { "type": "string" },
+        "createdAt": { "type": "number" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["buyerName", "buyerEmail", "country", "status", "subtotal", "createdAt"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Placed order from an inquiry",
+      "type": "object",
+      "properties": {
+        "orderNumber": { "type": "string" }
+      }
+    },
+    "Lead": {
+      "title": "Lead",
+      "description": "Buyer lead",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" }
+      }
+    },
+    "User": {
+      "title": "User",
+      "description": "Admin users",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "role": { "type": "string" }
+      }
+    },
+    "AiUsageLog": {
+      "title": "AiUsageLog",
+      "description": "Logs for AI requests",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "products": { "schema": { "$ref": "#/entities/Product" }, "description": "Products" },
+    "categories": { "schema": { "$ref": "#/entities/Category" }, "description": "Categories" },
+    "inquiries": { "schema": { "$ref": "#/entities/Inquiry" }, "description": "Inquiries" },
+    "orders": { "schema": { "$ref": "#/entities/Order" }, "description": "Orders" },
+    "leads": { "schema": { "$ref": "#/entities/Lead" }, "description": "Leads" },
+    "users": { "schema": { "$ref": "#/entities/User" }, "description": "Users" },
+    "ai_usage_logs": { "schema": { "$ref": "#/entities/AiUsageLog" }, "description": "AI Logs" }
+  }
+}
